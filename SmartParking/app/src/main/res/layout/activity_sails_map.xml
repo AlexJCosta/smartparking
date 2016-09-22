@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    tools:context="br.cin.ufpe.inesescin.smartparking.SailsMapActivity">
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/SAILSMap" />
+
+    <ImageView
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:id="@+id/zoomin"
+        android:src="@drawable/zoominb"
+        android:layout_above="@+id/zoomout"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:id="@+id/zoomout"
+        android:baselineAlignBottom="false"
+        android:src="@drawable/zoomoutb"
+        android:layout_alignTop="@+id/lockcenter"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/lockcenter"
+        android:src="@drawable/center1"
+        android:layout_marginBottom="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/stopRoute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stopRoute"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/zoomin"
+        android:layout_alignParentLeft="true"/>
+
+</RelativeLayout>
+
+

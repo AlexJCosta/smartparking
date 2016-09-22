@@ -99,7 +99,7 @@ public class FiwareConnection {
     }
 
     public String getBlockIDByStore(String storeName) throws IOException, JSONException {
-        int objNum = countEntityByAttribute("130.206.119.206:1026","latLng");
+        int objNum = countEntityByAttribute(Constants.FIWARE_ADDRESS,"latLng");
         String answer = "";
         for(int i = 0; i < objNum;i++){
             String response = getEntityAttributeValue("lojas",Integer.toString(i), Constants.FIWARE_ADDRESS,"value");
@@ -115,13 +115,34 @@ public class FiwareConnection {
         return answer;
     }
 
-    public Double[] getLatLng(String entityID) throws IOException, JSONException {
-        Double[] answer = new Double[2];
-        String response = getEntityAttributeValue("latLng",entityID, Constants.FIWARE_ADDRESS,"value");
-        JSONArray jsonResponseArray = new JSONArray(response);
-        JSONObject jsonObj = jsonResponseArray.getJSONObject(0);
-        answer[0] = Double.parseDouble(jsonObj.getString("lat"));
-        answer[1] = Double.parseDouble(jsonObj.getString("lng"));
+    public String getBlockNameByID(String entityId) throws IOException, JSONException {
+        String response = "";
+        String answer = "";
+        String request = "{\"entities\": [{\"type\":\"Block\",\"isPattern\": \"true\", \"id\":"+ entityId +"}]}";
+        response = doPostRequest(Constants.FIWARE_ADDRESS+"/v1/queryContext",request);
+        JSONObject jsonResponse = new JSONObject(response);
+        JSONArray contextArray = jsonResponse.getJSONArray("contextResponses");
+        JSONObject contextObject = contextArray.getJSONObject(0);
+        JSONObject contextElements = contextObject.getJSONObject("contextElement");
+        JSONArray attributesArray = contextElements.getJSONArray("attributes");
+        for(int i = 0;i < attributesArray.length();i++){
+            if(attributesArray.getJSONObject(i).getString("name").equalsIgnoreCase("nome")){
+                answer = attributesArray.getJSONObject(i).getString("value");
+            }
+        }
+        return answer;
+    }
+
+    public String getBlockIDByName(String blockName) throws IOException, JSONException {
+        //int objNum = countEntityByAttribute(Constants.FIWARE_ADDRESS,"latLng");
+        int objNum = 2;
+        String answer = "";
+        for(int i = 0;i < objNum;i++){
+            String possibleName = getBlockNameByID(i+"");
+            if(possibleName.equalsIgnoreCase(blockName)){
+                answer = ""+i;
+            }
+        }
         return answer;
     }
 
@@ -144,7 +165,7 @@ public class FiwareConnection {
     private synchronized String doPostRequest(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(url)
+                .url("http://"+url)
                 .addHeader("Accept", "application/json")
                 .addHeader("Connection", "close")
                 .post(body)
